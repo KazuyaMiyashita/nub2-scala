@@ -103,7 +103,14 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
     throw new NotImplementedException("while expression")
   }
   override def visitAssignmentExpression(node: Ast.AssignmentExpression): Any = {
-    throw new NotImplementedException("assignment")
+    environment.findEnvironment(node.variableName) match {
+      case Some(environmentDefinedVariable) => {
+        val value: Any = node.expression.accept(this)
+        environmentDefinedVariable.register(node.variableName, value)
+      }
+      case None => throw new NubRuntimeException("variable " + node.variableName + " is not defined")
+    }
+    ()
   }
   override def visitPrintlnExpression(node: Ast.PrintlnExpression): Any = {
     val value: Any = node.target.accept(this)
