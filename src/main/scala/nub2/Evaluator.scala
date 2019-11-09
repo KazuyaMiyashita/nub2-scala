@@ -9,7 +9,7 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
   private var environment: Environment            = Environment(null)
   private val functions: mutable.Map[String, Any] = new mutable.HashMap
 
-  private def asBoolean(value: Object): Boolean = {
+  private def asBoolean(value: Any): Boolean = {
     value.asInstanceOf[Boolean]
   }
 
@@ -52,13 +52,14 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
         node.lhs.accept(this) == node.rhs.accept(this)
       }
       case NOT_EQUAL => {
+        asInt((node.lhs.accept(this))) != asInt(node.rhs.accept(this))
         throw new NotImplementedException("equality operator " + node.operator.op)
       }
       case LOGICAL_AND => {
-        throw new NotImplementedException("logical operator " + node.operator.op)
+        asBoolean((node.lhs.accept(this))) && asBoolean(node.rhs.accept(this))
       }
       case LOGCIAL_OR => {
-        throw new NotImplementedException("logical operator " + node.operator.op)
+        asBoolean((node.lhs.accept(this))) || asBoolean(node.rhs.accept(this))
       }
     }
   }
