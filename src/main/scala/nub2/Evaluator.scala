@@ -43,10 +43,10 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
         asInt((node.lhs.accept(this))) <= asInt(node.rhs.accept(this))
       }
       case GREATER_THAN => {
-        throw new NotImplementedException("comparing operator " + node.operator.op)
+        asInt((node.lhs.accept(this))) > asInt(node.rhs.accept(this))
       }
       case GREATER_THAN_OR_EQUAL => {
-        throw new NotImplementedException("comparing operator " + node.operator.op)
+        asInt((node.lhs.accept(this))) >= asInt(node.rhs.accept(this))
       }
       case EQUAL => {
         node.lhs.accept(this) == node.rhs.accept(this)
