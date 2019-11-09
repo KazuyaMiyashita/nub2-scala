@@ -11,6 +11,11 @@ class Nub2Test extends FunSuite with Matchers {
     return new Evaluator().eval(Block(input))
   }
 
+  def eval(input: Block): Any = {
+    return new Evaluator().eval(input)
+  }
+
+
   test("testStringLiteral") {
     val evaluated  = eval(tString("Hello, World!"))
     val assumption = "Hello, World!"

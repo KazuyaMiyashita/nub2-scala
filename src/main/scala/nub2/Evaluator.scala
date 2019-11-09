@@ -7,7 +7,7 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
   import Evaluator._
 
   private var environment: Environment            = Environment(null)
-  private val functions: mutable.Map[String, Any] = new mutable.HashMap
+  private val functions: mutable.Map[String, Ast.DefFunction] = new mutable.HashMap
 
   private def asBoolean(value: Any): Boolean = {
     value.asInstanceOf[Boolean]
@@ -128,7 +128,18 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
     null
   }
   override def visitFunctionCall(node: Ast.FunctionCall): Any = {
-    throw new NotImplementedException("function call")
+    val function = functions.get(node.name).getOrElse(null)
+    if (function == null) throw new NubRuntimeException("function" + node.name + " is not defined")
+
+    val localEnvironment = Environment(null)
+    (function.args zip node.params).foreach { case (name, value) =>
+      localEnvironment.register(name, value.accept(this))
+    }
+    val backup = environment
+    this.environment = localEnvironment
+    val result = visitBlock(function.body)
+    this.environment = backup
+    result
   }
 
   def eval(program: Ast.Block): Any = {
