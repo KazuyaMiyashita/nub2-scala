@@ -143,7 +143,7 @@ class Nub2Test extends FunSuite with Matchers {
     evaluated shouldEqual assumption
   }
 
-  test("") {
+  test("testWhileLt10") {
     val evaluated = eval(
       tBlock(
         tLet(
