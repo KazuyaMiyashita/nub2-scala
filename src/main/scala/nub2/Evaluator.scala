@@ -6,7 +6,7 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
 
   import Evaluator._
 
-  private var environment: Environment = Environment(null)
+  private var environment: Environment            = Environment(null)
   private val functions: mutable.Map[String, Any] = new mutable.HashMap
 
   private def asBoolean(value: Object): Boolean = {
@@ -118,7 +118,7 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
   }
 
   def eval(program: Ast.Block): Any = {
-    var target: Ast.Block = program
+    var target: Ast.Block        = program
     val checker: VariableChecker = new VariableChecker
     target = checker.checkVariable(program)
     val typer: Typer = new Typer
@@ -131,7 +131,7 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
     }
     program.accept(this)
   }
-  
+
 }
 
 object Evaluator {

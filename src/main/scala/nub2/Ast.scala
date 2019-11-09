@@ -86,18 +86,18 @@ object Ast {
 
   sealed abstract class BinaryOperator(val op: String)
   object BinaryOperator {
-    case object ADD extends BinaryOperator("+")
-    case object SUBTRACT extends BinaryOperator("+")
-    case object MULTIPLY extends BinaryOperator("*")
-    case object DIVIDE extends BinaryOperator("/")
-    case object LESS_THAN extends BinaryOperator("<")
-    case object LESS_THAN_OR_EQUAL extends BinaryOperator("<=")
-    case object GREATER_THAN extends BinaryOperator(">")
+    case object ADD                   extends BinaryOperator("+")
+    case object SUBTRACT              extends BinaryOperator("+")
+    case object MULTIPLY              extends BinaryOperator("*")
+    case object DIVIDE                extends BinaryOperator("/")
+    case object LESS_THAN             extends BinaryOperator("<")
+    case object LESS_THAN_OR_EQUAL    extends BinaryOperator("<=")
+    case object GREATER_THAN          extends BinaryOperator(">")
     case object GREATER_THAN_OR_EQUAL extends BinaryOperator(">=")
-    case object EQUAL extends BinaryOperator("==")
-    case object NOT_EQUAL extends BinaryOperator("!=")
-    case object LOGICAL_AND extends BinaryOperator("&&")
-    case object LOGCIAL_OR extends BinaryOperator("||")
+    case object EQUAL                 extends BinaryOperator("==")
+    case object NOT_EQUAL             extends BinaryOperator("!=")
+    case object LOGICAL_AND           extends BinaryOperator("&&")
+    case object LOGCIAL_OR            extends BinaryOperator("||")
   }
 
   case class BinaryExpression(operator: BinaryOperator, lhs: Expression, rhs: Expression) extends Expression {
@@ -133,34 +133,36 @@ object Ast {
   object Factory {
 
     // Literals
-    def tString(value: String): StringLiteral = new StringLiteral(value)
-    def tInt(value: Int): IntLiteral = new IntLiteral(value)
+    def tString(value: String): StringLiteral    = new StringLiteral(value)
+    def tInt(value: Int): IntLiteral             = new IntLiteral(value)
     def tBoolean(value: Boolean): BooleanLiteral = new BooleanLiteral(value)
-    def tId(name: String): Id = new Id(name)
+    def tId(name: String): Id                    = new Id(name)
 
     // Println expression
     def tPrintln(target: Expression): PrintlnExpression = new PrintlnExpression(target)
 
     // Binary expressions
-    def tAdd(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(ADD ,lhs, rhs)
-    def tSubtract(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(SUBTRACT ,lhs, rhs)
-    def tMultiply(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(MULTIPLY ,lhs, rhs)
-    def tDivide(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(DIVIDE ,lhs, rhs)
-    def tAnd(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(LOGICAL_AND, lhs, rhs)
-    def tOr(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(LOGCIAL_OR, lhs, rhs)
-    def tLt(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(LESS_THAN, lhs, rhs)
-    def tLte(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(LESS_THAN_OR_EQUAL, lhs, rhs)
-    def tGt(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(GREATER_THAN, lhs, rhs)
-    def tGte(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(GREATER_THAN_OR_EQUAL, lhs, rhs)
-    def tEqual(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(EQUAL, lhs, rhs)
+    def tAdd(lhs: Expression, rhs: Expression): BinaryExpression      = new BinaryExpression(ADD, lhs, rhs)
+    def tSubtract(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(SUBTRACT, lhs, rhs)
+    def tMultiply(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(MULTIPLY, lhs, rhs)
+    def tDivide(lhs: Expression, rhs: Expression): BinaryExpression   = new BinaryExpression(DIVIDE, lhs, rhs)
+    def tAnd(lhs: Expression, rhs: Expression): BinaryExpression      = new BinaryExpression(LOGICAL_AND, lhs, rhs)
+    def tOr(lhs: Expression, rhs: Expression): BinaryExpression       = new BinaryExpression(LOGCIAL_OR, lhs, rhs)
+    def tLt(lhs: Expression, rhs: Expression): BinaryExpression       = new BinaryExpression(LESS_THAN, lhs, rhs)
+    def tLte(lhs: Expression, rhs: Expression): BinaryExpression      = new BinaryExpression(LESS_THAN_OR_EQUAL, lhs, rhs)
+    def tGt(lhs: Expression, rhs: Expression): BinaryExpression       = new BinaryExpression(GREATER_THAN, lhs, rhs)
+    def tGte(lhs: Expression, rhs: Expression): BinaryExpression      = new BinaryExpression(GREATER_THAN_OR_EQUAL, lhs, rhs)
+    def tEqual(lhs: Expression, rhs: Expression): BinaryExpression    = new BinaryExpression(EQUAL, lhs, rhs)
     def tNotEqual(lhs: Expression, rhs: Expression): BinaryExpression = new BinaryExpression(NOT_EQUAL, lhs, rhs)
 
     // Assignment
-    def tAssign(variableName: String, newValue: Expression): AssignmentExpression = new AssignmentExpression(variableName, newValue)
+    def tAssign(variableName: String, newValue: Expression): AssignmentExpression =
+      new AssignmentExpression(variableName, newValue)
 
     // Control structures
     def tBlock(elements: Expression*): Block = new Block(elements.toList)
-    def tLet(variableName: String, init: Expression, body: Block): LetExpression = new LetExpression(variableName, init, body)
+    def tLet(variableName: String, init: Expression, body: Block): LetExpression =
+      new LetExpression(variableName, init, body)
     def tLet(variableName: String, init: Expression, bodyFactory: String => Block): LetExpression = {
       val body: Block = bodyFactory.apply(variableName)
       new LetExpression(variableName, init, body)
@@ -168,7 +170,8 @@ object Ast {
     def tIf(tCondition: Expression, tThen: Expression, tElse: Expression): IfExpression = {
       new IfExpression(tCondition, Block(tThen), Block(tElse))
     }
-    def tWhile(tCondition: Expression, tBody: Expression*): WhileExpression = new WhileExpression(tCondition, tBody.toList)
+    def tWhile(tCondition: Expression, tBody: Expression*): WhileExpression =
+      new WhileExpression(tCondition, tBody.toList)
 
     // Function definitions
     def tDef(name: String, args: List[String], body: Block): DefFunction = new DefFunction(name, args, body)
