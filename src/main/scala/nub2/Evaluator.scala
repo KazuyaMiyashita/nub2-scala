@@ -129,7 +129,7 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
   }
   override def visitFunctionCall(node: Ast.FunctionCall): Any = {
     val function = functions.get(node.name).getOrElse(null)
-    if (function == null) throw new NubRuntimeException("function" + node.name + " is not defined")
+    if (function == null) throw new NubRuntimeException("function " + node.name + " is not defined")
 
     val localEnvironment = Environment(null)
     (function.args zip node.params).foreach { case (name, value) =>
