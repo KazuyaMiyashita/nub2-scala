@@ -100,7 +100,12 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
     throw new NotImplementedException("if expression")
   }
   override def visitWhileExpression(node: Ast.WhileExpression): Any = {
-    throw new NotImplementedException("while expression")
+    while (asBoolean(node.condition.accept(this))) {
+      node.body.foreach { exp =>
+        exp.accept(this)
+      }
+    }
+    ()
   }
   override def visitAssignmentExpression(node: Ast.AssignmentExpression): Any = {
     environment.findEnvironment(node.variableName) match {
