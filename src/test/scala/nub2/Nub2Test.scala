@@ -172,7 +172,7 @@ class Nub2Test extends FunSuite with Matchers {
     val evaluated = eval(
       tIf(
         tLt(tInt(1), tInt(2)),
-        tString("1  < 2"),
+        tString("1 < 2"),
         tString("1 >= 2")
       )
     )

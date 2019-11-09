@@ -97,7 +97,8 @@ class Evaluator extends Ast.ExpressionVisitor[Any] {
     last
   }
   override def visitIfExpression(node: Ast.IfExpression): Any = {
-    throw new NotImplementedException("if expression")
+    if (asBoolean(node.condition.accept(this))) node.thenClause.accept(this)
+    else node.elseClause.accept(this)
   }
   override def visitWhileExpression(node: Ast.WhileExpression): Any = {
     while (asBoolean(node.condition.accept(this))) {
